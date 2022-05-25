@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {CommentsService} from '../../services';
+import {IComment} from '../../interfaces';
 
 @Component({
   selector: 'app-comment-details',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentDetailsComponent implements OnInit {
 
-  constructor() { }
+  comment: IComment;
+
+  constructor(private activatedRoute: ActivatedRoute, private commentsService: CommentsService) {
+  }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(({id}) => {
+      this.commentsService.getById(id).subscribe(value => this.comment = value)
+    })
   }
 
 }
